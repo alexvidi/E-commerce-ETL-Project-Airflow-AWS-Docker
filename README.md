@@ -14,7 +14,9 @@ The main objective is to **demonstrate a scalable and containerized ETL workflow
 ## Pipeline Stages:
 
 **Extract** → Retrieves product data from the Fake Store API.
+
 **Transform** → Processes sales metrics and categorizes data.
+
 **Load** → Uploads transformed data to an **Amazon S3** bucket.
 
 ##  Technologies Used
