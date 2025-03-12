@@ -1,45 +1,76 @@
-# ETL E-commerce Pipeline
+# E-commerce ETL Project with Airflow, AWS & Docker
 
-## Project Description
+##  Project Overview
+This project implements a **fully automated ETL pipeline** using **Apache Airflow, AWS S3, and Docker**. The pipeline extracts product data from the Fake Store API, processes sales metrics, and uploads the transformed data to **Amazon S3** for further analysis.
 
-This project implements an ETL (Extract, Transform, Load) pipeline using Apache Airflow, designed to process simulated e-commerce data. 
-The pipeline automates data extraction from an API, transforms it into meaningful metrics, and stores it in Amazon S3 for further analysis.
+The main objective is to **demonstrate a scalable and containerized ETL workflow** that can be deployed in real-world data engineering environments.
 
----
+##  Architecture
+```
+ ┌───────────────────┐     ┌──────────────────┐     ┌───────────────┐     ┌──────────────┐
+ │ Fake Store API   │ --> │ Extract Data    │ --> │ Transform Data │ --> │ Load to S3   │
+ └───────────────────┘     └──────────────────┘     └───────────────┘     └──────────────┘
+```
+## Pipeline Stages:
 
-## Technologies and Tools Used
+**Extract** → Retrieves product data from the Fake Store API.
+**Transform** → Processes sales metrics and categorizes data.
+**Load** → Uploads transformed data to an **Amazon S3** bucket.
 
-- **Apache Airflow**: Orchestrates the pipeline and manages ETL tasks.
-- **Python**: The primary programming language for pipeline logic.
-- **Pandas**: A library used for data manipulation and analysis during the transformation step.
-- **Boto3**: AWS SDK for Python, used to integrate with Amazon S3.
-- **Amazon S3**: Cloud storage service for storing processed data.
-- **requests**: A Python library for making HTTP requests and fetching data from the API.
-- **Docker**: Runs Airflow and its components in a containerized environment.
-- **GitHub**: Version control and source code repository.
+##  Technologies Used
+- **Apache Airflow** Orchestrates the ETL workflow.
+- **Docker** Manages Airflow services in containers.
+- **AWS S3** Stores the processed data
+- **Python (Pandas, Requests, Boto3)** Extracts, transforms, and loads the data.
 
----
+##  Project Structure
 
-## ETL Pipeline Workflow
+E-COMMERCE ETL PROJECT AIRFLOW AWS DOCKER/
+│── config/                    # Configuration files
+│   ├── settings.py            # ETL settings (API URLs, S3 paths, etc.)
+│
+│── dags/                       # Airflow DAG definitions
+│   ├── ecommerce_dag.py       # ETL DAG definition
+│   ├── _pycache_/           # Python cache (ignored in Git)
+│
+│── data/                       # Data storage
+│   ├── raw/                    # Raw extracted data
+│   │   ├── products.json       # Extracted JSON data
+│   ├── transformed/            # Transformed data
+│   │   ├── total_sales_by_category.csv  # Processed sales metrics
+│
+│── docs/                       # Documentation and screenshots
+│   ├── airflow_aws_api_connection.png
+│   ├── amazon_s3_load_file_success.png
+│   ├── dag_graph_success.png
+│   ├── dag_list.png
+│   ├── dag_tasks_success.png
+│   ├── docker_desktop_containers.png
+│
+│── scripts/                    # ETL Python scripts
+│   ├── extract.py              # Extracts data from API
+│   ├── transform.py            # Transforms and processes data
+│   ├── load_s3.py              # Loads processed data into S3
+│   ├── _init_.py             # Marks directory as a package
+│   ├── _pycache_/            # Python cache (ignored in Git)
+│
+│── venv/                       # Virtual environment (ignored in Git)
+│
+│── .gitignore                  # Files to exclude from Git
+│── .env                        # Environment variables (not committed)
+│── docker-compose.yaml         # Airflow and service configuration
+│── Dockerfile                  # Custom Airflow image setup
+│── README.md                   # Project documentation
+│── requirements.txt            # Python dependencies
+```
 
-1. **Extraction (Extract)**:  
-   Product data is fetched from the [Fake Store API](https://fakestoreapi.com) and saved as a JSON file.
-   
-2. **Transformation (Transform)**:  
-   - The extracted data is loaded using Pandas.  
-   - A simulated sales field is generated.  
-   - Total sales by category are calculated and saved as a CSV file.
-
-3. **Loading (Load)**:  
-   The processed data is uploaded to an Amazon S3 bucket using the Boto3 client.
-
----
-
-## Project Structure
-
-```plaintext
-etl_ecommerce/
-├── dags/
-│   ├── ecommerce_pipeline.py  # Airflow pipeline code
-├── requirements.txt           # Required dependencies
-├── README.md                  # This file
+##  Setup & Installation
+### Clone the Repository
+```bash
+git clone https://github.com/alexvidi/E-commerce-ETL-Project-Airflow-AWS-Docker.git
+cd E-commerce-ETL-Project-Airflow-AWS-Docker
+```
+## Future Enhancements
+ Connect to a database instead of storing files in S3.
+ Implement real-time streaming with Kafka.
+ Use dbt for transformations.

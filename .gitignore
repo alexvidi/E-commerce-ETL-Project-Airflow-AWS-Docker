@@ -1,0 +1,56 @@
+#  Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.so
+*.swp
+*.swo
+*.egg-info/
+.env
+*.log
+
+#  Ignore configuration and credential files
+config/*.json
+config/*.yml
+config/*.yaml
+config/*.ini
+config/settings.py
+
+#  Ignore temporary and cache files
+/tmp/
+*.tmp
+*.bak
+.DS_Store
+*.log
+*.pid
+
+#  Ignore Airflow-generated files
+logs/
+airflow.cfg
+webserver_config.py
+unittests.cfg
+airflow.db
+airflow-worker.pid
+
+#  Ignore Docker volumes and dependencies
+docker-compose.override.yml
+docker-compose*.log
+.env
+secrets/
+volumes/
+*.tar
+*.gz
+
+#  Ignore Python dependencies
+venv/
+.env/
+Pipfile
+Pipfile.lock
+poetry.lock
+
+#  Ignore AWS-related files (if applicable)
+.aws/
+*.pem
+
+#  Ignore screenshots and temporary documentation files
+screenshots/
+docs/temp/
