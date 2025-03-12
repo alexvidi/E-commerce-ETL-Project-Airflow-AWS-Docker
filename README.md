@@ -75,5 +75,7 @@ cd E-commerce-ETL-Project-Airflow-AWS-Docker
 ```
 ## Future Enhancements
  Connect to a database instead of storing files in S3.
+
  Implement real-time streaming with Kafka.
+ 
  Use dbt for transformations.
