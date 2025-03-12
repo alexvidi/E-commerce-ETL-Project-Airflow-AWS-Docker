@@ -27,6 +27,7 @@ The main objective is to **demonstrate a scalable and containerized ETL workflow
 
 ##  Project Structure
 
+```
 E-COMMERCE ETL PROJECT AIRFLOW AWS DOCKER/
 │── config/                    # Configuration files
 │   ├── settings.py            # ETL settings (API URLs, S3 paths, etc.)
