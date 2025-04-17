@@ -17,13 +17,82 @@ This project implements a **production-ready ETL (Extract, Transform, Load) pipe
 - **Monitoring & Logging**: Built-in Airflow monitoring and error handling
 - **Scalable Architecture**: Designed for handling growing data volumes
 
-## Architecture
+##  Architecture
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐    ┌──────────────┐
-│  Fake Store API │ -> │  Extract (API)   │ -> │ Transform Data  │ -> │ Load to S3   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘    └──────────────┘
-        Data Source         Python/Pandas        Data Processing         AWS Storage
+### Detailed Pipeline Flow
+```mermaid
+graph LR
+    subgraph "Docker Environment"
+        direction TB
+        subgraph "Docker Containers"
+            direction LR
+            W[Airflow Webserver]
+            S[Airflow Scheduler]
+            P[Airflow PostgreSQL]
+            R[Redis]
+        end
+
+        subgraph "ETL Pipeline Container"
+            direction LR
+            B[Raw Data]
+            C[Data Extraction]
+            D[Raw Storage]
+            E[Data Transformation]
+            F[Data Processing]
+            G[AWS Upload]
+            
+            B -->|Python/Requests| C
+            C -->|JSON| D
+            D -->|Pandas| E
+            E -->|Data Validation| F
+            F -->|Clean Data| G
+        end
+    end
+
+    subgraph "External Services"
+        A[Fake Store API]
+    end
+
+    subgraph "AWS Infrastructure"
+        H[S3 Bucket]
+        I[Backup]
+        J[Reporting]
+    end
+
+    subgraph "Airflow Monitoring"
+        K[DAG Orchestration]
+        L[Error Handling]
+    end
+
+    %% Connections
+    A -->|HTTP Requests| B
+    G -->|boto3| H
+    H -->|Versioning| I
+    H -->|Analytics| J
+    K -->|Task Management| C
+    K -->|Task Management| E
+    K -->|Task Management| G
+    L -.->|Alerts| K
+
+    %% Container Communications
+    W <--->|Internal Network| S
+    S <--->|Internal Network| P
+    S <--->|Queue| R
+    S -->|Executes| C
+    W -->|Monitors| K
+
+    %% Styles
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#ff9,stroke:#333,stroke-width:2px
+    style K fill:#9cf,stroke:#333,stroke-width:2px
+    style L fill:#f99,stroke:#333,stroke-width:2px
+    style W fill:#dfd,stroke:#333,stroke-width:2px
+    style S fill:#dfd,stroke:#333,stroke-width:2px
+    style P fill:#dfd,stroke:#333,stroke-width:2px
+    style R fill:#dfd,stroke:#333,stroke-width:2px
+    
+    classDef container fill:#e4f7e4,stroke:#333,stroke-width:2px
+    class W,S,P,R container
 ```
 
 ### Pipeline Stages
@@ -76,8 +145,8 @@ project_root/
 ├── data/                      # Data storage
 │   ├── raw/                  # Raw API data
 │   └── transformed/          # Processed datasets
-├── docs/                      # Documentation & images
-├── scripts/                   # ETL processing scripts
+├── images/                      # images 
+├── etl/                   # ETL processing scripts
 │   ├── extract.py           # Data extraction
 │   ├── transform.py         # Data transformation
 │   └── load_s3.py          # S3 upload logic
