@@ -17,82 +17,37 @@ This project implements a **production-ready ETL (Extract, Transform, Load) pipe
 - **Monitoring & Logging**: Built-in Airflow monitoring and error handling
 - **Scalable Architecture**: Designed for handling growing data volumes
 
-##  Architecture
+## 🏗 Architecture
 
-### Detailed Pipeline Flow
+### System Overview
 ```mermaid
-graph LR
-    subgraph "Docker Environment"
-        direction TB
-        subgraph "Docker Containers"
-            direction LR
-            W[Airflow Webserver]
-            S[Airflow Scheduler]
-            P[Airflow PostgreSQL]
-            R[Redis]
-        end
-
-        subgraph "ETL Pipeline Container"
-            direction LR
-            B[Raw Data]
-            C[Data Extraction]
-            D[Raw Storage]
-            E[Data Transformation]
-            F[Data Processing]
-            G[AWS Upload]
-            
-            B -->|Python/Requests| C
-            C -->|JSON| D
-            D -->|Pandas| E
-            E -->|Data Validation| F
-            F -->|Clean Data| G
-        end
-    end
-
-    subgraph "External Services"
-        A[Fake Store API]
-    end
-
-    subgraph "AWS Infrastructure"
-        H[S3 Bucket]
-        I[Backup]
-        J[Reporting]
-    end
-
-    subgraph "Airflow Monitoring"
-        K[DAG Orchestration]
-        L[Error Handling]
-    end
-
-    %% Connections
-    A -->|HTTP Requests| B
-    G -->|boto3| H
-    H -->|Versioning| I
-    H -->|Analytics| J
-    K -->|Task Management| C
-    K -->|Task Management| E
-    K -->|Task Management| G
-    L -.->|Alerts| K
-
-    %% Container Communications
-    W <--->|Internal Network| S
-    S <--->|Internal Network| P
-    S <--->|Queue| R
-    S -->|Executes| C
-    W -->|Monitors| K
-
-    %% Styles
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style H fill:#ff9,stroke:#333,stroke-width:2px
-    style K fill:#9cf,stroke:#333,stroke-width:2px
-    style L fill:#f99,stroke:#333,stroke-width:2px
-    style W fill:#dfd,stroke:#333,stroke-width:2px
-    style S fill:#dfd,stroke:#333,stroke-width:2px
-    style P fill:#dfd,stroke:#333,stroke-width:2px
-    style R fill:#dfd,stroke:#333,stroke-width:2px
+flowchart LR
+    %% Main Components
+    API([Fake Store API])
+    DC[("Docker 🐳")]
+    S3[(AWS S3)]
     
-    classDef container fill:#e4f7e4,stroke:#333,stroke-width:2px
-    class W,S,P,R container
+    %% Docker Container Components
+    subgraph Docker["Docker Environment"]
+        AF["Apache Airflow 🔄"]
+        ETL["ETL Pipeline"]
+    end
+    
+    %% Flow
+    API -->|Extract| ETL
+    ETL -->|Transform| ETL
+    ETL -->|Load| S3
+    AF -->|Orchestrate| ETL
+    
+    %% Styling
+    classDef api fill:#ff9f9f,stroke:#333,stroke-width:2px
+    classDef docker fill:#a8e6cf,stroke:#333,stroke-width:2px
+    classDef aws fill:#ffd3b6,stroke:#333,stroke-width:2px
+    classDef flow fill:#dcedc1,stroke:#333,stroke-width:2px
+    
+    class API api
+    class Docker,AF,ETL docker
+    class S3 aws
 ```
 
 ### Pipeline Stages
