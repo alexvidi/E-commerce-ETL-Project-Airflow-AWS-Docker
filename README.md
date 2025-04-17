@@ -43,7 +43,7 @@ This project implements a **production-ready ETL (Extract, Transform, Load) pipe
    - Uploads to AWS S3 with error handling
    - Maintains data versioning and backup
 
-## 🛠 Technologies Used
+## Technologies Used
 
 - **Apache Airflow**: Workflow orchestration and scheduling
   - DAG management
