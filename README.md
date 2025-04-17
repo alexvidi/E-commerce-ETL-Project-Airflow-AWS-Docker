@@ -17,7 +17,7 @@ This project implements a **production-ready ETL (Extract, Transform, Load) pipe
 - **Monitoring & Logging**: Built-in Airflow monitoring and error handling
 - **Scalable Architecture**: Designed for handling growing data volumes
 
-## 🏗 Architecture
+## Architecture
 
 ### System Overview
 ```mermaid
